@@ -1,4 +1,4 @@
-console.log(dsahjoasd);
+;
 const DashBoard = () => {
   return <div>DashBoard</div>;
 };
