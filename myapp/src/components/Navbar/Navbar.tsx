@@ -1,7 +1,7 @@
 const Navbar = () => {
   return (
-    <div className="flex justify-center border-2 h-[7vh] ">
-      <div className="flex justify-between w-2/3 border-2 border-black">
+    <div className="flex justify-center h-[7vh] ">
+      <div className="flex justify-between w-2/3 ">
         <div className="self-center text-3xl">CG</div>
         <div className="flex space-x-12 ">
           <p className="flex h-full p-2 text-center hover:border-b-2 hover:border-black hover:cursor-pointer ">

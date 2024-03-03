@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import dashBaordRoutes from "./datasets/dashBaordRoutes";
 import LandinPageRoutes from "./datasets/landingPageRoutes/LandinPageRoutes";
 import "./index.css";
