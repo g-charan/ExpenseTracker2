@@ -5,6 +5,9 @@ const ExpenseTracking = React.lazy(
   () => import("../subpages/ExpenseTracking/ExpenseTracking")
 );
 const Goals = React.lazy(() => import("../subpages/Goals/Goals"));
+const GoalStatus = React.lazy(
+  () => import("../subpages/GoalStatus/GoalStatus")
+);
 
 const dashBaordRoutes = [
   { name: "DashBoard", path: "/", element: DashBoard },
@@ -17,6 +20,11 @@ const dashBaordRoutes = [
     name: "Goals",
     path: "/Goals",
     element: Goals,
+  },
+  {
+    name: "GoalStatus",
+    path: "/goalstatus",
+    element: GoalStatus,
   },
 ];
 
