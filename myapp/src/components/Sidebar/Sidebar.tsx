@@ -17,11 +17,11 @@ const SideBar = () => {
   const Menus = [
     { title: "Dashboard", src: img2, path: "/user/" },
     { title: "Inbox", src: img3, path: "/user/Subscriptions" },
-    { title: "Accounts", src: img4, gap: true, path: "/accounts" },
-    { title: "Schedule ", src: img1 },
-    { title: "Search", src: img5 },
-    { title: "Analytics", src: img6 },
-    { title: "Files ", src: img7, gap: true },
+    { title: "Accounts", src: img4, gap: true, path: "/user/expensetracking" },
+    { title: "Schedule ", src: img1, path: "/user/expensetracking" },
+    { title: "Search", src: img5, path: "/user/goals" },
+    { title: "Analytics", src: img6, path: "/user/Records" },
+    { title: "Files ", src: img7, gap: true, path: "/user/goalstatus" },
     { title: "Setting", src: img8 },
   ];
 
