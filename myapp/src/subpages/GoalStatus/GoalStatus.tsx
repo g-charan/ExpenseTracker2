@@ -1,4 +1,34 @@
-const RecentExpenses = () => {
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { goalsContext } from "../../context/GoalContext/GoalContext";
+
+const url = "http://127.0.0.1:5000/goalstatus";
+
+const GoalContent = () => {
+  const goals = useContext(goalsContext);
+  const [Suggestion, setSuggestion] = useState({
+    Possibility: "",
+    AverageSpendPerMonth: "",
+    Suggestion: "",
+  });
+
+  const postData = async () => {
+    try {
+      const resp = await axios.post(url, {
+        Amount: goals?.goals.Amount,
+        MonthsRemaining: goals?.goals.MonthsRemaining,
+      });
+      const data = resp.data;
+      setSuggestion({ ...Suggestion, AverageSpendPerMonth: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    postData();
+  }, [goals]);
+
   return (
     <div className="col-span-5 p-4 row-span-8">
       <div className="flex justify-between w-full p-2">
@@ -16,11 +46,11 @@ const RecentExpenses = () => {
               Goal
             </div>
             <div className="col-span-2 p-2 mx-20 my-10 space-y-6">
-              <p>AMount:2000</p>
-              <p>Months:12</p>
-              <p>Possibility: 98%</p>
-              <p>Average Spend per month: 12</p>
-              <p>Suggestion: go for it...</p>
+              <p>AMount:{goals?.goals.Amount}</p>
+              <p>Months:{goals?.goals.MonthsRemaining}</p>
+              <p>Possibility: {Suggestion.Possibility}</p>
+              <p>Average Spend per month: {Suggestion.AverageSpendPerMonth}</p>
+              <p>Suggestion: {Suggestion.Suggestion}</p>
             </div>
             <div className="col-span-2 my-10">
               <div className="h-full text-center border-2 border-black">
@@ -39,7 +69,7 @@ const GoalStatus = () => {
     <div className="flex flex-col w-full">
       <div className="flex-1 w-[95%] self-center">
         <div className="grid h-auto grid-flow-col grid-cols-5 space-x-2 space-y-1 grid-rows-8">
-          <RecentExpenses />
+          <GoalContent />
         </div>
       </div>
     </div>

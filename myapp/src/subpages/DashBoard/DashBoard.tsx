@@ -1,6 +1,21 @@
 import { LineChart } from "@mui/x-charts";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+const url = "http://127.0.0.1:5000/dailyexpenses";
+
+const url2 = "http://127.0.0.1:5000/monthlyexpenses";
+
+const url3 = "http://127.0.0.1:5000/totalexpenses";
+
+type boxObj = {
+  today: String;
+  total: String;
+};
+
+let testing: boolean = false;
+
 const RecentExpenses = () => {
   return (
     <div className="h-full">
@@ -42,7 +57,7 @@ const Savings = () => {
       <div className="border-2 border-black rounded-[0.225rem] h-2/3">
         <div className="flex flex-col justify-center px-4 py-1">
           <p className="text-3xl">15%</p>
-          <div className="flex-1 border-2 rounded-md">
+          <div className="flex-1 border-2 border-black rounded-md">
             <div className="w-1/6 h-4 bg-black"></div>
           </div>
           <div className="flex justify-between flex-1">
@@ -89,19 +104,23 @@ const ExpenseSummary = () => {
   );
 };
 
-const Boxes = () => {
+const Boxes = (props: boxObj) => {
   return (
-    <div className="flex col-span-4 row-span-2 border-2 justify-evenly">
+    <div
+      className={`flex col-span-4 row-span-2 ${
+        testing && "border-2"
+      } justify-evenly`}
+    >
       <div className="border-2 border-black rounded-[0.225rem] w-1/6">
         <div className="flex flex-col gap-1 p-4">
           <p>Total</p>
-          <h1 className="self-center text-5xl">10,000</h1>
+          <h1 className="self-center text-5xl">Rs {props.total}</h1>
         </div>
       </div>
       <div className="border-2 border-black rounded-[0.225rem] w-1/6">
         <div className="flex flex-col gap-1 p-4">
           <p>Today</p>
-          <h1 className="self-center text-5xl">10,000</h1>
+          <h1 className="self-center text-5xl">Rs {props.today}</h1>
         </div>
       </div>
       <div className="border-2 border-black rounded-[0.225rem] w-1/6">
@@ -122,12 +141,44 @@ const Boxes = () => {
 
 const DashBoard = () => {
   const [monthly, setMonthly] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+  const [today, setToday] = useState<String>("");
+
+  const [total, settotal] = useState<String>("");
+
+  const getBarChartData = async () => {
+    try {
+      const resp = await axios.get(url2);
+      const resp2 = await axios.get(url);
+      const resp3 = await axios.get(url3);
+      setMonthly(resp.data);
+      setToday(resp2.data);
+      settotal(resp3.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBarChartData();
+  }, []);
+
   return (
     <div className="flex flex-col w-full h-full">
-      <div className="grid h-full grid-cols-4 m-6 border-2 grid-rows-12">
-        <Boxes />
-        <div className="flex w-full col-span-4 row-span-5 border-2">
-          <div className="w-1/2 p-4 border-2 rounded-lg">
+      <div
+        className={`grid h-full grid-cols-4 m-6 ${
+          testing && "border-2"
+        } grid-rows-12`}
+      >
+        <Boxes today={today} total={total} />
+        <div
+          className={`flex w-full col-span-4 row-span-5 ${
+            testing && "border-2"
+          }`}
+        >
+          <div
+            className={`w-1/2 p-4 ${testing && "border-2"}border-2 rounded-lg`}
+          >
             <BarChart
               series={[{ data: monthly }]}
               height={290}
@@ -153,7 +204,9 @@ const DashBoard = () => {
               margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
             />
           </div>
-          <div className="w-1/2 p-4 border-2 rounded-lg">
+          <div
+            className={`w-1/2 p-4 ${testing && "border-2"}border-2 rounded-lg`}
+          >
             <LineChart
               xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
               series={[
@@ -165,10 +218,18 @@ const DashBoard = () => {
             />
           </div>
         </div>
-        <div className="col-span-2 row-span-5 overflow-auto border-2">
+        <div
+          className={`col-span-2 row-span-5 overflow-auto ${
+            testing && "border-2"
+          }`}
+        >
           <RecentExpenses />
         </div>
-        <div className="flex flex-col justify-center col-span-2 row-span-5 p-2 space-y-6 border-2">
+        <div
+          className={`flex flex-col justify-center col-span-2 row-span-5 p-2 space-y-6 ${
+            testing && "border-2"
+          }`}
+        >
           <Savings />
           <ExpenseSummary />
         </div>

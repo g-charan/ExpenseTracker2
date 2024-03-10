@@ -1,5 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router";
+import { goalsContext } from "../../context/GoalContext/GoalContext";
 
 type addingObj = {
   adding: boolean;
@@ -84,12 +86,14 @@ const Postform = () => {
 //Recent Goals
 
 const RecentGoals = () => {
+  const goal = useContext(goalsContext);
   const [data, setData] = useState([]);
   const add = useContext(addingGoalsContext);
   const adding = add.adding;
   const setAdding = add.setAdding;
 
   type goalsObj = {
+    _id: String;
     category: string;
     Amount: String;
     MonthsRemaining: String;
@@ -103,6 +107,22 @@ const RecentGoals = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const navigate: NavigateFunction = useNavigate();
+
+  const setGoalsData = async (
+    id: String,
+    Amount: String,
+    MonthsRemaining: String
+  ) => {
+    goal?.setGoals({
+      ...goal.goals,
+      _id: id,
+      Amount: Amount,
+      MonthsRemaining: MonthsRemaining,
+    });
+    navigate("/user/goalstatus");
   };
 
   useEffect(() => {
@@ -132,7 +152,12 @@ const RecentGoals = () => {
                 <p className="self-center text-3xl">{data.category}</p>
                 <p className="self-center">Amount: {data.Amount}</p>
                 <p className="self-center">Months: {data.MonthsRemaining}</p>
-                <button className="bg-black hover:bg-white p-1 border hover:border border-black hover:border-black rounded-[0.225rem] w-20 text-white hover:text-black transition-all duration-200 self-center active:scale-95">
+                <button
+                  onClick={() =>
+                    setGoalsData(data._id, data.Amount, data.MonthsRemaining)
+                  }
+                  className="bg-black hover:bg-white p-1 border hover:border border-black hover:border-black rounded-[0.225rem] w-20 text-white hover:text-black transition-all duration-200 self-center active:scale-95"
+                >
                   View
                 </button>
               </div>

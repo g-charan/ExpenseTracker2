@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import GoalContext from "./context/GoalContext/GoalContext";
 import dashBaordRoutes from "./datasets/dashBaordRoutes";
 import LandinPageRoutes from "./datasets/landingPageRoutes/LandinPageRoutes";
 import "./index.css";
@@ -50,7 +51,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Suspense>
     <React.StrictMode>
-      <RouterProvider router={router}></RouterProvider>
+      <GoalContext>
+        <RouterProvider router={router}></RouterProvider>
+      </GoalContext>
     </React.StrictMode>
   </Suspense>
 );
